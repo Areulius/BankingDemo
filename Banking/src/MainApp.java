@@ -6,12 +6,13 @@ public class MainApp {
         try {
             BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
 
+
             boolean exit = false;
             while(!exit) {
                 String[] command = r.readLine().split(" +");
                 switch (command[0]) {
                     case "help":
-                        System.out.println("help command wip");
+                        System.out.println(ConsoleColors.BLACK_BOLD + "help command wip");
                         break;
                     case "hello":
                         System.out.println("Hello, user");
