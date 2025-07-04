@@ -1,5 +1,9 @@
-public class Test {
-    public static void main(String[] args) {
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class Tests {
+    public static void main(String[] args) throws IOException {
         BankAccount ba1 = new BankAccount();
         BankAccount ba2 = new BankAccount(1000);
 
@@ -15,5 +19,12 @@ public class Test {
 
         System.out.println("Balance of account 2:");
         ba2.printBal();
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String s = reader.readLine();
+        String se = reader.readLine();
+
+        System.out.println("read line = " + s);
+
     }
 }
