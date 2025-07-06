@@ -1,12 +1,29 @@
 import java.util.ArrayList;
-import static java.lang.Math.round;
 
 public class BankUser {
-    private String username;
-    private int id;
+    private final String username;
+    private final String password;
     ArrayList<BankAccount> UserAccounts;
 
-    public BankUser (){
-        //this.id = (int)round(100*Math.random());
+
+    public BankUser (String username, String password){
+        this.username = username;
+        this.password = password;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+//    public createBankAccount(String name) {
+//
+//    }
+//
+//    public deleteBankAccount(String name) {
+//
+//    }
 }
