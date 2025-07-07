@@ -1,13 +1,21 @@
+import java.util.ArrayList;
+
 public class BankAccount {
     private double balance;
+    private int id;
+    private final BankUser connectedUser;
 
     // Constructors
     public BankAccount() {
         this.balance = 0;
+        this.id = createId();
+        this.connectedUser = MainApp.currentUser;
     }
 
     public BankAccount(double balance) {
         this.balance = balance;
+        this.id = createId();
+        this.connectedUser = MainApp.currentUser;
     }
 
     //Getters, setters
@@ -17,6 +25,10 @@ public class BankAccount {
 
     public void setBalance(double newBal) {
         this.balance = newBal;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     //Other Methods
@@ -50,5 +62,34 @@ public class BankAccount {
         } else {
             System.out.println(":( You can only transfer a positive amount");
         }
+    }
+
+    // create and validate id
+    private int createId() {
+
+        boolean idIsGood = false;
+        int newId = 0;
+
+        while (!idIsGood) {
+            newId = (int) (Math.random()*100);
+            idIsGood = validateId(newId);
+        }
+        return newId;
+    }
+
+    private boolean validateId(int newId) {
+
+        ArrayList<BankUser> userList = MainApp.getUserList();
+
+
+        for (BankUser user : userList) {
+            if (user.getUserBankAccounts() == null) return true;
+            for (BankAccount acc : user.getUserBankAccounts()) {
+                if (acc.getId() == newId) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

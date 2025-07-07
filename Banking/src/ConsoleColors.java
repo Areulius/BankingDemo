@@ -26,7 +26,7 @@ public interface ConsoleColors {
     // UNDERLINE
 //    String BLACK_ULINE = "\033[4;30m";
 //    String RED_ULINE = "\033[4;31m";
-//    String GREEN_ULINE = "\033[4;32m";
+    String GREEN_ULINE = "\033[4;32m";
 //    String YELLOW_ULINE = "\033[4;33m";
 //    String BLUE_ULINE = "\033[4;34m";
 //    String PURPLE_ULINE = "\033[4;35m";

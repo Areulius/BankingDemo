@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class MainApp implements ConsoleColors{
 
-    private static BankUser currentUser = null;
+    public static BankUser currentUser = null;
     private static final ArrayList<BankUser> userList = new ArrayList<>();
 
 
@@ -15,7 +15,7 @@ public class MainApp implements ConsoleColors{
             Scanner sc = new Scanner(System.in);
 
             // intro to the bank
-            System.out.println(GREEN_BOLD + "------------------------" + RESET);
+            System.out.println(GREEN_BOLD + "-------------------------" + RESET);
             System.out.println(GREEN_BOLD_BRIGHT + "| WELCOME TO THE BANK™ |" + RESET);
             System.out.println(GREEN_BOLD + "------------------------" + RESET);
             System.out.println(GREEN + "Login with 'login <username> <pass>'" + RESET);
@@ -28,7 +28,15 @@ public class MainApp implements ConsoleColors{
                 switch (command[0]) {
 
                     case "help":
-                        System.out.println("help command wip");
+                        System.out.println(GREEN_ULINE + "List of Commands:" + RESET);
+                        System.out.println("'login <username> <pass>' - login to account");
+                        System.out.println("'logout' - logout from account");
+                        System.out.println("'register <username> <pass>' - register a new user account");
+                        System.out.println("'current' - view who is currently logged in");
+                        System.out.println("'create' - create a new bank account for the logged-in user");
+                        System.out.println("'delete <id>' - delete a bank account of the logged-in user");
+                        System.out.println("'exit' - exit the app");
+
                         break;
 
                     case "login":
@@ -36,7 +44,7 @@ public class MainApp implements ConsoleColors{
                             System.out.println(YELLOW + "A user is already logged in" + RESET);
                             break;
                         } else if (command.length < 3) {
-                            System.out.println("command format 'login <username> <pass>'");
+                            System.out.println("command format - 'login <username> <pass>'");
                             break;
                         } else {
                             currentUser = loginUser(command[1], command[2]);
@@ -44,14 +52,18 @@ public class MainApp implements ConsoleColors{
                         }
 
                     case "logout":
-                        currentUser = null;
-                        System.out.println(GREEN + "Logged out" + RESET);
+                        if (currentUser == null) {
+                            System.out.println("Not logged in");
+                        } else {
+                            currentUser = null;
+                            System.out.println(GREEN + "Logged out" + RESET);
+                        }
                         break;
 
-                    case "create":
+                    case "register":
                         //checking correctness
                         if (command.length < 3) {
-                            System.out.println("command format 'create <username> <pass>'");
+                            System.out.println("command format - 'register <username> <pass>'");
                             break;
                         }
 
@@ -67,14 +79,46 @@ public class MainApp implements ConsoleColors{
                             break;
                         }
 
-                        System.out.println(GREEN +"Successfully created the account" + RESET);
+                        System.out.println(GREEN +"Successfully registered a new account" + RESET);
+                        break;
+
+                    case "create":
+                        if (currentUser == null) {
+                            System.out.println(YELLOW + "No-one is logged in" + RESET);
+                            System.out.println(YELLOW + "Login using 'login <username> <password>'" + RESET);
+                        } else {
+                            currentUser.createBankAccount();
+                        }
+                        break;
+                    case "delete":
+                        if (command.length < 2) {
+                            System.out.println(YELLOW + "command format - 'delete <id>'" + RESET);
+                        } else if (currentUser == null) {
+                            System.out.println(YELLOW + "No-one is logged in" + RESET);
+                            System.out.println(YELLOW + "Login using 'login <username> <password>'" + RESET);
+                        } else {
+                            currentUser.deleteBankAccount(Integer.parseInt(command[1]));
+                        }
                         break;
 
                     case "current":
                         if (currentUser != null) {
                             System.out.println(GREEN + "Current User: " + GREEN_BOLD_BRIGHT + currentUser.getUsername() + RESET);
                         } else {
-                            System.out.println(GREEN + "No user logged-in" + RESET);
+                            System.out.println(YELLOW + "No user logged-in" + RESET);
+                        }
+                        break;
+
+                    case "list":
+                        if (currentUser.getUserBankAccounts().isEmpty()) {
+                            System.out.println(YELLOW + "User has no bank accounts" + RESET);
+                        } else {
+                            int i = 0;
+                            System.out.println(GREEN_ULINE + "User's Bank Accounts:" + RESET);
+                            for (BankAccount acc : currentUser.getUserBankAccounts()) {
+                                System.out.println("no." + (i+1) + " - id: " + acc.getId() );
+                                i += 1;
+                            }
                         }
                         break;
 
@@ -90,7 +134,6 @@ public class MainApp implements ConsoleColors{
                 }
             }
         } catch (Exception e) {
-            System.out.println("error");
             e.printStackTrace();
         }
     }
@@ -112,12 +155,17 @@ public class MainApp implements ConsoleColors{
                     return user;
                 } else {
                     System.out.println(RED_BRIGHT + ":( wrong password" + RESET);
+                    return null;
                 }
             } else {
                 System.out.println(RED_BRIGHT + ":( no such username" + RESET);
+                return null;
             }
         }
-
         return null;
+    }
+
+    public static ArrayList<BankUser> getUserList() {
+        return userList;
     }
 }
