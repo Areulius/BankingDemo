@@ -143,6 +143,7 @@ public class MainApp implements ConsoleColors{
                             System.out.println(YELLOW + "No user logged-in" + RESET);
                         } else {
                             currentUser.transfer(Integer.parseInt(command[1]), Integer.parseInt(command[2]), Double.parseDouble(command[3]));
+
                         }
                         break;
 
@@ -155,7 +156,7 @@ public class MainApp implements ConsoleColors{
                             int i = 0;
                             System.out.println(GREEN_ULINE + "User's Bank Accounts:" + RESET);
                             for (BankAccount acc : currentUser.getUserBankAccounts()) {
-                                System.out.println("no." + (i+1) + " - id: " + acc.getId() );
+                                System.out.println("no." + (i+1) + " - id: " + WHITE_BOLD + acc.getId() + RESET + " | bal: " + GREEN_BOLD + String.format("%.2f", acc.getBalance()) + RESET + " €");
                                 i += 1;
                             }
                         }
@@ -178,7 +179,6 @@ public class MainApp implements ConsoleColors{
             e.printStackTrace();
         }
     }
-
 
     public static ArrayList<BankUser> getUserList() {
         return userList;

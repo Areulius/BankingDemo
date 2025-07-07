@@ -65,6 +65,11 @@ public class BankAccount {
         System.out.printf("| Account's Balance: %.2f |\n", this.balance);
     }
 
+    public void transferFunds(BankAccount toAcc, double amount) {
+        this.balance -= amount;
+        toAcc.balance += amount;
+    }
+
     // create and validate id
     private int createId() {
 
@@ -127,7 +132,6 @@ public class BankAccount {
             while (line != null) {
 
                 String[] arr = line.split(",");
-                System.out.println(line);
                 BankUser user = MainApp.findUser(arr[0]);
                 BankAccount bAccount = new BankAccount(Double.parseDouble(arr[2]), Integer.parseInt(arr[1]), user);
 

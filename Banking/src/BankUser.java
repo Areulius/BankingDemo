@@ -94,18 +94,20 @@ public class BankUser implements ConsoleColors{
     public void transfer(int fromId, int toId, double amount) {
         BankAccount fromAcc = null;
         BankAccount toAcc = null;
-        for (BankAccount acc : userBankAccounts) {
-            if (acc.getId() == fromId) {
-                fromAcc = acc;
-
-            } else if (acc.getId() == toId) {
-                toAcc = acc;
+        for (BankUser user : MainApp.getUserList()) {
+            for (BankAccount acc : user.getUserBankAccounts()) {
+                if (acc.getId() == fromId) {
+                    fromAcc = acc;
+                } else if (acc.getId() == toId) {
+                    toAcc = acc;
+                }
             }
         }
 
         if (fromAcc != null) {
             if (toAcc != null) {
-                System.out.println(GREEN + "Successfully transferred " + amount + "€" + " from id: " + fromId + "("+fromAcc.getConnectedUser().getUsername()+")" + " to id: " + toId + "("+fromAcc.getConnectedUser().getUsername()+")" + RESET);
+                fromAcc.transferFunds(toAcc, amount);
+                System.out.println(GREEN + "Successfully transferred " + amount + "€" + " from id: " + fromId + "("+fromAcc.getConnectedUser().getUsername()+")" + " to id: " + toId + "("+toAcc.getConnectedUser().getUsername()+")" + RESET);
             } else {
                 System.out.println(RED_BRIGHT + ":( no account found with (to)id: " + toId + RESET);
             }

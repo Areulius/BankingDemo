@@ -21,7 +21,7 @@ public interface ConsoleColors {
 //    String BLUE_BOLD = "\033[1;34m";
 //    String PURPLE_BOLD = "\033[1;35m";
 //    String CYAN_BOLD = "\033[1;36m";
-//    String WHITE_BOLD = "\033[1;37m";
+    String WHITE_BOLD = "\033[1;37m";
     
     // UNDERLINE
 //    String BLACK_ULINE = "\033[4;30m";
