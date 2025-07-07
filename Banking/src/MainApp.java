@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -7,8 +8,11 @@ public class MainApp implements ConsoleColors{
     public static BankUser currentUser = null;
     private static final ArrayList<BankUser> userList = new ArrayList<>();
 
-
     public static void main(String[] args) {
+
+        //read from files
+        BankUser.readAll();
+        BankAccount.readAll();
 
         // start terminal program
         try {
@@ -35,6 +39,8 @@ public class MainApp implements ConsoleColors{
                         System.out.println("'current' - view who is currently logged in");
                         System.out.println("'create' - create a new bank account for the logged-in user");
                         System.out.println("'delete <id>' - delete a bank account of the logged-in user");
+                        System.out.println("'deposit <id> <amount>' - deposit money in an account");
+                        System.out.println("'withdraw <id> <amount>' - withdraw money from an account");
                         System.out.println("'exit' - exit the app");
 
                         break;
@@ -47,7 +53,7 @@ public class MainApp implements ConsoleColors{
                             System.out.println("command format - 'login <username> <pass>'");
                             break;
                         } else {
-                            currentUser = loginUser(command[1], command[2]);
+                            currentUser = BankUser.loginUser(command[1], command[2]);
                             break;
                         }
 
@@ -110,7 +116,9 @@ public class MainApp implements ConsoleColors{
                         break;
 
                     case "list":
-                        if (currentUser.getUserBankAccounts().isEmpty()) {
+                        if (currentUser == null) {
+                            System.out.println(YELLOW + "No user logged-in" + RESET);
+                        } else if (currentUser.getUserBankAccounts().isEmpty()) {
                             System.out.println(YELLOW + "User has no bank accounts" + RESET);
                         } else {
                             int i = 0;
@@ -125,6 +133,8 @@ public class MainApp implements ConsoleColors{
                     case "exit":
                         exit = true;
                         sc.close();
+                        BankUser.storeAll();
+                        BankAccount.storeAll();
                         System.out.println(GREEN_BOLD_BRIGHT + "See You Next Time!" + RESET);
                         break;
 
@@ -139,33 +149,16 @@ public class MainApp implements ConsoleColors{
     }
 
 
-    // login method
-    public static BankUser loginUser(String username, String password) {
-
-        if (userList.isEmpty()) {
-            System.out.println(RED_BRIGHT + ":( no such username (also there are no accounts)" + RESET);
-            return null;
-        }
-
-        //loop through user list
-        for (BankUser user : userList) {
-            if (user.getUsername().equals(username)) {
-                if (user.getPassword().equals(password)) {
-                    System.out.println(GREEN +"Successfully logged in" + RESET);
-                    return user;
-                } else {
-                    System.out.println(RED_BRIGHT + ":( wrong password" + RESET);
-                    return null;
-                }
-            } else {
-                System.out.println(RED_BRIGHT + ":( no such username" + RESET);
-                return null;
-            }
-        }
-        return null;
-    }
-
     public static ArrayList<BankUser> getUserList() {
         return userList;
+    }
+
+    public static BankUser findUser(String username) {
+        for (BankUser user : userList) {
+            if (user.getUsername().equals(username)) {
+                return user;
+            }
+        }
+        return null; // shouldn't be possible to get here
     }
 }
