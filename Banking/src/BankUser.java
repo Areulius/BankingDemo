@@ -38,9 +38,7 @@ public class BankUser implements ConsoleColors{
                 }
             }
             System.out.println(YELLOW + "Found no account of such id" + RESET);
-            return;
         }
-
     }
 
 
@@ -66,12 +64,54 @@ public class BankUser implements ConsoleColors{
                     System.out.println(RED_BRIGHT + ":( wrong password" + RESET);
                     return null;
                 }
-            } else {
-                System.out.println(RED_BRIGHT + ":( no such username" + RESET);
-                return null;
             }
         }
+        System.out.println(RED_BRIGHT + ":( no such username" + RESET);
         return null;
+    }
+
+    public void deposit(int id, double amount) {
+        for (BankAccount acc : userBankAccounts) {
+            if (acc.getId() == id) {
+                acc.deposit(amount);
+                return;
+            }
+        }
+        System.out.println(RED_BRIGHT + ":( no account with such id found" + RESET);
+    }
+
+    public void withdraw(int id, double amount) {
+        for (BankAccount acc : userBankAccounts) {
+            if (acc.getId() == id) {
+                acc.withdraw(amount);
+                return;
+            }
+        }
+        System.out.println(RED_BRIGHT + ":( no account with such id found" + RESET);
+    }
+
+    // transfer validation , probably not well implemented
+    public void transfer(int fromId, int toId, double amount) {
+        BankAccount fromAcc = null;
+        BankAccount toAcc = null;
+        for (BankAccount acc : userBankAccounts) {
+            if (acc.getId() == fromId) {
+                fromAcc = acc;
+
+            } else if (acc.getId() == toId) {
+                toAcc = acc;
+            }
+        }
+
+        if (fromAcc != null) {
+            if (toAcc != null) {
+                System.out.println(GREEN + "Successfully transferred " + amount + "€" + " from id: " + fromId + "("+fromAcc.getConnectedUser().getUsername()+")" + " to id: " + toId + "("+fromAcc.getConnectedUser().getUsername()+")" + RESET);
+            } else {
+                System.out.println(RED_BRIGHT + ":( no account found with (to)id: " + toId + RESET);
+            }
+        } else {
+            System.out.println(RED_BRIGHT + ":( no account found with (from)id: " + fromId + RESET);
+        }
     }
 
     // storage in file------------
@@ -83,11 +123,7 @@ public class BankUser implements ConsoleColors{
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             if (MainApp.getUserList().isEmpty()) return;
             for (BankUser user : MainApp.getUserList()) {
-                String userString = String.format("%s,%s", user.getUsername(), user.getPassword());
-                for (BankAccount acc : user.getUserBankAccounts()) {
-                    userString = userString.concat("," + acc.getId());
-                }
-                writer.write(userString + "\n");
+                writer.write(String.format("%s,%s\n", user.getUsername(), user.getPassword()));
             }
         } catch (Exception e) {
             e.printStackTrace();

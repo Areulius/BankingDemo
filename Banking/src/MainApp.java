@@ -1,4 +1,3 @@
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -41,6 +40,7 @@ public class MainApp implements ConsoleColors{
                         System.out.println("'delete <id>' - delete a bank account of the logged-in user");
                         System.out.println("'deposit <id> <amount>' - deposit money in an account");
                         System.out.println("'withdraw <id> <amount>' - withdraw money from an account");
+                        System.out.println("'list' - show list of bank accounts for a user");
                         System.out.println("'exit' - exit the app");
 
                         break;
@@ -96,6 +96,7 @@ public class MainApp implements ConsoleColors{
                             currentUser.createBankAccount();
                         }
                         break;
+
                     case "delete":
                         if (command.length < 2) {
                             System.out.println(YELLOW + "command format - 'delete <id>'" + RESET);
@@ -112,6 +113,36 @@ public class MainApp implements ConsoleColors{
                             System.out.println(GREEN + "Current User: " + GREEN_BOLD_BRIGHT + currentUser.getUsername() + RESET);
                         } else {
                             System.out.println(YELLOW + "No user logged-in" + RESET);
+                        }
+                        break;
+
+                    case "deposit":
+                        if (command.length < 3) {
+                            System.out.println(YELLOW + "command format - 'deposit <id> <amount>'" + RESET);
+                        } else if (currentUser == null) {
+                            System.out.println(YELLOW + "No user logged-in" + RESET);
+                        } else {
+                            currentUser.deposit(Integer.parseInt(command[1]), Double.parseDouble(command[2]));
+                        }
+                        break;
+
+                    case "withdraw":
+                        if (command.length < 3) {
+                            System.out.println(YELLOW + "command format - 'withdraw <id> <amount>'" + RESET);
+                        } else if (currentUser == null) {
+                            System.out.println(YELLOW + "No user logged-in" + RESET);
+                        } else {
+                            currentUser.withdraw(Integer.parseInt(command[1]), Double.parseDouble(command[2]));
+                        }
+                        break;
+
+                    case "transfer":
+                        if (command.length < 4) {
+                            System.out.println(YELLOW + "command format - 'transfer <id(from)> <id(to)> <amount>'" + RESET);
+                        } else if (currentUser == null) {
+                            System.out.println(YELLOW + "No user logged-in" + RESET);
+                        } else {
+                            currentUser.transfer(Integer.parseInt(command[1]), Integer.parseInt(command[2]), Double.parseDouble(command[3]));
                         }
                         break;
 

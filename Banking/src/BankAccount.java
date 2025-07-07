@@ -38,11 +38,15 @@ public class BankAccount {
         return this.id;
     }
 
+    public BankUser getConnectedUser() {
+        return connectedUser;
+    }
+
     //Other Methods
     public void deposit(double amount) {
         if (amount > 0) {
             this.balance += amount;
-            System.out.printf("Deposited %f to the account\n", amount);
+            System.out.printf("Deposited %.2f to the account\n", amount);
         } else {
             System.out.println(":( You can only deposit a positive amount");
         }
@@ -51,7 +55,7 @@ public class BankAccount {
     public void withdraw(double amount) {
         if (amount > 0) {
             this.balance -= amount;
-            System.out.printf("Withdrew %f from the account\n", amount);
+            System.out.printf("Withdrew %.2f from the account\n", amount);
         } else {
             System.out.println(":( You can only withdraw a positive amount");
         }
@@ -59,16 +63,6 @@ public class BankAccount {
 
     public void printBal() {
         System.out.printf("| Account's Balance: %.2f |\n", this.balance);
-    }
-
-    public void transferFunds(BankAccount toAcc, double amount) {
-        if (amount > 0) {
-            this.balance -= amount;
-            toAcc.balance += amount;
-            System.out.printf("Successfully transferred %.2f!\n", amount);
-        } else {
-            System.out.println(":( You can only transfer a positive amount");
-        }
     }
 
     // create and validate id
